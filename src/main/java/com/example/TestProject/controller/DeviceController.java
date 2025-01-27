@@ -12,13 +12,19 @@ public class DeviceController {
     @Autowired
     private InventoryService inventoryService;
 
+
     @PostMapping("/save")
     private Inventory saveDevice(@RequestBody Inventory inventory) {
         return inventoryService.saveDevice(inventory);
     }
 
-    @PostMapping("/{id}")
-    private Inventory getDevive(@PathVariable Integer id){
+    @GetMapping("/{id}")
+    private Inventory getInventory(@PathVariable Long id){
         return inventoryService.getInventory(id);
+    }
+
+    @GetMapping("/test")
+    private String doTest(){
+        return "API endpoint working";
     }
 }
