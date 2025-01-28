@@ -1,10 +1,12 @@
 package com.example.TestProject.service;
 
-import com.example.TestProject.model.Inventory;
+import com.example.TestProject.model.Device;
 
 public interface InventoryService {
-    Inventory saveDevice(Inventory inventory);
-    Inventory getDevice(Long id);
-    Inventory updateDevice(Inventory inventory);
+
+    //Methods to manage Device
+    Device saveDevice(Device device);
+    Device getDevice(Long id);
+    Device updateDevice(Device device);
     String deleteDevice(Long id);
 }

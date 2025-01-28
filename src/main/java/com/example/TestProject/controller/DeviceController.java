@@ -1,6 +1,7 @@
 package com.example.TestProject.controller;
 
-import com.example.TestProject.model.Inventory;
+import com.example.TestProject.model.Device;
+import com.example.TestProject.model.Device;
 import com.example.TestProject.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,17 +15,17 @@ public class DeviceController {
 
 
     @PostMapping("/save")
-    private Inventory saveDevice(@RequestBody Inventory inventory) {
-        return inventoryService.saveDevice(inventory);
+    private Device saveDevice(@RequestBody Device device) {
+        return inventoryService.saveDevice(device);
     }
 
     @GetMapping("/{id}")
-    private Inventory getDevice(@PathVariable Long id){
+    private Device getDevice(@PathVariable Long id){
         return inventoryService.getDevice(id);
     }
 
     @PutMapping("/update")
-    private Inventory updateDevice(@RequestBody Inventory inventory){
+    private Device updateDevice(@RequestBody Device inventory){
         return inventoryService.updateDevice(inventory);
     }
 

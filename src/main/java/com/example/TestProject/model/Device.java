@@ -2,20 +2,23 @@ package com.example.TestProject.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 @Node
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Inventory {
+@Setter
+public class Device {
 
     @Id
     private Long id;
     private String name;
     private String deviceType;
+
+    @Relationship(type = "HAS", direction = Relationship.Direction.OUTGOING)
+    private ShelfPosition shelfPosition;
 
     public Long getId(){
        return this.id;
@@ -27,5 +30,9 @@ public class Inventory {
 
     public String getDeviceType(){
         return this.deviceType;
+    }
+
+    public void setShelfPosition(ShelfPosition shelfPosition) {
+        this.shelfPosition = shelfPosition;
     }
 }

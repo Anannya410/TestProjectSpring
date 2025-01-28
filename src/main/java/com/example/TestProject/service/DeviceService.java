@@ -1,8 +1,8 @@
 package com.example.TestProject.service;
 
-import com.example.TestProject.exception.DeviceNotFoundException;
-import com.example.TestProject.model.Inventory;
-import com.example.TestProject.repository.InventoryRepository;
+import com.example.TestProject.exception.EntityNotFoundException;
+import com.example.TestProject.model.Device;
+import com.example.TestProject.repository.DeviceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -15,38 +15,38 @@ public class DeviceService implements InventoryService{
     private static final Logger log = LoggerFactory.getLogger(DeviceService.class);
 
     @Autowired
-    private InventoryRepository inventoryRepository;
+    private DeviceRepository deviceRepository;
 
     @Override
-    public Inventory saveDevice(Inventory inventory) {
-        log.info("Saving device " /*+ inventory.getId()*/);
-        return inventoryRepository.save(inventory);
+    public Device saveDevice(Device device) {
+        log.info("Saving device " + device.getId());
+        return deviceRepository.save(device);
     }
 
     @Override
-    public Inventory getDevice(Long id) {
-        log.info("Getting inventory " + id);
-        return inventoryRepository.findById(id).orElse(null);
+    public Device getDevice(Long id) {
+        log.info("Getting device " + id);
+        return deviceRepository.findById(id).orElse(null);
     }
 
     @Override
-    public Inventory updateDevice(Inventory inventory) {
-        if(inventoryRepository.existsById(inventory.getId())){
-            log.info("Updating inventory " + inventory.getId());
-            return inventoryRepository.save(inventory);
+    public Device updateDevice(Device device) {
+        if(deviceRepository.existsById(device.getId())){
+            log.info("Updating device " + device.getId());
+            return deviceRepository.save(device);
         }
-        log.info("Device not found for update with id " + inventory.getId());
-        throw new DeviceNotFoundException("Device not found for update with id " + inventory.getId());
+        log.info("Device not found for update with id " + device.getId());
+        throw new EntityNotFoundException("Device not found for update with id " + device.getId());
     }
 
     @Override
     public String deleteDevice(Long id) {
-        if(inventoryRepository.existsById(id)) {
+        if(deviceRepository.existsById(id)) {
             log.info("Deleting device " + id);
-            inventoryRepository.deleteById(id);
+            deviceRepository.deleteById(id);
             return "Device Deleted Successfully";
         }
         log.info("Device with id " + id + " not found");
-        throw new DeviceNotFoundException("Device with id " + id + " not found");
+        throw new EntityNotFoundException("Device with id " + id + " not found");
     }
 }
