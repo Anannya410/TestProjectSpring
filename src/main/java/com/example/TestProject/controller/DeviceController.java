@@ -19,12 +19,17 @@ public class DeviceController {
     }
 
     @GetMapping("/{id}")
-    private Inventory getInventory(@PathVariable Long id){
-        return inventoryService.getInventory(id);
+    private Inventory getDevice(@PathVariable Long id){
+        return inventoryService.getDevice(id);
     }
 
-    @GetMapping("/test")
-    private String doTest(){
-        return "API endpoint working";
+    @PutMapping("/update")
+    private Inventory updateDevice(@RequestBody Inventory inventory){
+        return inventoryService.updateDevice(inventory);
+    }
+
+    @DeleteMapping("delete/{id}")
+    private String deleteDevice(@PathVariable Long id){
+        return inventoryService.deleteDevice(id);
     }
 }
