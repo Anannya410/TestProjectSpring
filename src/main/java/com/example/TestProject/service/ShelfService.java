@@ -6,6 +6,7 @@ import com.example.TestProject.model.ShelfPosition;
 import java.util.List;
 
 public interface ShelfService {
+    //Managing Shelves and Shelf Positions
     Shelf saveShelf(Shelf shelf);
     Shelf getShelfById(Long id);
     List<Shelf> getAllShelves();
@@ -15,4 +16,5 @@ public interface ShelfService {
 
     //Adding Relationships
     void addShelfPositionToDevice(Long deviceId, Long shelfPositionId);
+    void addShelfToShelfPosition(Long shelfId, Long shelfPositionId);
 }

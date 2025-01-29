@@ -1,15 +1,10 @@
 package com.example.TestProject.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 @Node
-@Data
-@Setter
 public class Device {
 
     @Id
@@ -30,6 +25,22 @@ public class Device {
 
     public String getDeviceType(){
         return this.deviceType;
+    }
+
+    public ShelfPosition getShelfPosition() {
+        return shelfPosition;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
     }
 
     public void setShelfPosition(ShelfPosition shelfPosition) {

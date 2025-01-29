@@ -3,6 +3,7 @@ package com.example.TestProject.controller;
 import com.example.TestProject.model.DeviceShelfPositionRequest;
 import com.example.TestProject.model.Shelf;
 import com.example.TestProject.model.ShelfPosition;
+import com.example.TestProject.model.ShelfToShelfPositionRequest;
 import com.example.TestProject.service.ShelfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -46,8 +47,14 @@ public class ShelfController {
         return shelfService.getAllShelfPosition();
     }
 
-    @PostMapping("relationship/device/shelfposition")
+    @PostMapping("/relationship/device/shelfposition")
     private void addShelfPositionToDevice(@RequestBody DeviceShelfPositionRequest request){
         shelfService.addShelfPositionToDevice(request.getDeviceId(), request.getShelfPositionId());
     }
+
+    @PostMapping("/relationship/shelf/shelfposition")
+    private void addShelfPositionToShelf(@RequestBody ShelfToShelfPositionRequest request){
+        shelfService.addShelfToShelfPosition(request.getShelfPositionId(), request.getShelfPositionId());
+    }
+
 }

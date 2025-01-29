@@ -34,4 +34,20 @@ public class ShelfPosition {
     public void setDeviceId(Long deviceId) {
         this.deviceId = deviceId;
     }
+
+    public Shelf getShelf() {
+        return shelf;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setShelf(Shelf shelf) {
+        this.shelf = shelf;
+    }
 }

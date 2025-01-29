@@ -73,12 +73,30 @@ public class ShelfServiceImpl implements ShelfService{
         ShelfPosition shelfPosition = shelfPositionRepository.findById(shelfPositionId)
                 .orElseThrow(() -> new EntityNotFoundException("Shelf position with id "+shelfPositionId+" not found"));
 
-        //update node values
+        //Set relationship, update node values
         device.setShelfPosition(shelfPosition);
         shelfPosition.setDeviceId(deviceId);
 
-        //Save the updated values
+        //Save the updated nodes
         deviceRepository.save(device);
         shelfPositionRepository.save(shelfPosition);
+    }
+
+    @Override
+    public void addShelfToShelfPosition(Long shelfId, Long shelfPositionId) {
+        Shelf shelf = shelfRepository.findById(shelfId)
+                .orElseThrow(() -> new EntityNotFoundException("Shelf with id "+shelfId+" not found"));
+
+        ShelfPosition shelfPosition = shelfPositionRepository.findById(shelfPositionId)
+                .orElseThrow(() -> new EntityNotFoundException("Shelf position with id "+shelfPositionId+" not found"));
+
+        //Set relationship , update node values
+        shelf.setShelfPositionId(shelfPositionId);
+        shelfPosition.setShelf(shelf);
+
+        //Save the updated nodes
+        shelfRepository.save(shelf);
+        shelfPositionRepository.save(shelfPosition);
+
     }
 }

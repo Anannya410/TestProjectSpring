@@ -1,12 +1,11 @@
 package com.example.TestProject.model;
 
-import lombok.Data;
+
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 @Node
-@Data
 public class Shelf {
 
     @Id
@@ -15,8 +14,6 @@ public class Shelf {
     private String shelfType;
     private Long shelfPositionId;
 
-    @Relationship(type = "HAS", direction = Relationship.Direction.INCOMING)
-    private ShelfPosition shelfPosition;
 
     public Long getId(){
         return this.id;
@@ -32,5 +29,21 @@ public class Shelf {
 
     public Long getShelfPositionId() {
         return this.shelfPositionId;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setShelfType(String shelfType) {
+        this.shelfType = shelfType;
+    }
+
+    public void setShelfPositionId(Long shelfPositionId) {
+        this.shelfPositionId = shelfPositionId;
     }
 }
