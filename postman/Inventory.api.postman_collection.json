@@ -205,7 +205,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\" : 2,\r\n    \"name\" : \"Bottom\"\r\n}",
+					"raw": "{\r\n    \"id\" : 1,\r\n    \"name\" : \"Top\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
