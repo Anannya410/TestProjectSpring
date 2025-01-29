@@ -74,7 +74,7 @@ public class ShelfServiceImpl implements ShelfService{
                 .orElseThrow(() -> new EntityNotFoundException("Shelf position with id "+shelfPositionId+" not found"));
 
         //Set relationship, update node values
-        device.setShelfPosition(shelfPosition);
+        device.getShelfPosition().add(shelfPosition);
         shelfPosition.setDeviceId(deviceId);
 
         //Save the updated nodes
@@ -90,7 +90,12 @@ public class ShelfServiceImpl implements ShelfService{
         ShelfPosition shelfPosition = shelfPositionRepository.findById(shelfPositionId)
                 .orElseThrow(() -> new EntityNotFoundException("Shelf position with id "+shelfPositionId+" not found"));
 
-        //Set relationship , update node values
+        // Check if the relationship already exists
+        if (shelfPosition.getShelf() != null) {
+            throw new IllegalStateException("ShelfPosition with id " + shelfPositionId + " is already assigned to another Shelf");
+        }
+
+                //Set relationship , update node values
         shelf.setShelfPositionId(shelfPositionId);
         shelfPosition.setShelf(shelf);
 

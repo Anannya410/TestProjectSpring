@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
+import java.util.List;;
+
 @Node
 public class Device {
 
@@ -13,7 +15,7 @@ public class Device {
     private String deviceType;
 
     @Relationship(type = "HAS", direction = Relationship.Direction.OUTGOING)
-    private ShelfPosition shelfPosition;
+    private List<ShelfPosition> shelfPosition;
 
     public Long getId(){
        return this.id;
@@ -27,7 +29,7 @@ public class Device {
         return this.deviceType;
     }
 
-    public ShelfPosition getShelfPosition() {
+    public List<ShelfPosition> getShelfPosition() {
         return shelfPosition;
     }
 
@@ -43,7 +45,7 @@ public class Device {
         this.deviceType = deviceType;
     }
 
-    public void setShelfPosition(ShelfPosition shelfPosition) {
+    public void setShelfPosition(List<ShelfPosition> shelfPosition) {
         this.shelfPosition = shelfPosition;
     }
 }
