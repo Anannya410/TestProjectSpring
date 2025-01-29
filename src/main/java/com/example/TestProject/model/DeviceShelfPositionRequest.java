@@ -1,3 +1,6 @@
+//This model is made to facilitate Post request for adding relationship between device and shelf
+//Relationship at holds: (d:Device) -[HAS]-> (p:ShelfPosition) -[HAS]->(s:Shelf)
+
 package com.example.TestProject.model;
 
 import lombok.Data;
