@@ -26,7 +26,8 @@ public class DeviceService implements InventoryService{
     @Override
     public Device getDevice(Long id) {
         log.info("Getting device " + id);
-        return deviceRepository.findById(id).orElse(null);
+        return deviceRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Device with id " + id + " not found"));
     }
 
     @Override
