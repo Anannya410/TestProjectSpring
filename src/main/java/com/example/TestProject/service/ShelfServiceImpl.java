@@ -36,7 +36,8 @@ public class ShelfServiceImpl implements ShelfService{
     @Override
     public Shelf getShelfById(Long id) {
         log.info("Getting shelf with id "+ id);
-        return shelfRepository.findById(id).orElse(null);
+        return shelfRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Shelf with id "+id+" not found"));
     }
 
     @Override
@@ -55,7 +56,8 @@ public class ShelfServiceImpl implements ShelfService{
     @Override
     public ShelfPosition getShelfPositionById(Long id) {
         log.info("Getting shelf with id "+ id);
-        return shelfPositionRepository.findById(id).orElse(null);
+        return shelfPositionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Shelf with id "+id+" not found"));
     }
 
     @Override

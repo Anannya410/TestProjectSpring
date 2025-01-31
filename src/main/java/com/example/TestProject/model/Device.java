@@ -3,6 +3,7 @@ package com.example.TestProject.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;;
 

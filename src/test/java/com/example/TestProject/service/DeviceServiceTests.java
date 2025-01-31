@@ -48,7 +48,7 @@ public class DeviceServiceTests {
 
     @Disabled
     @Test
-    void testGetDevice(){
+    void testGetDevice_found(){
         // (Step 1) Arrange: Create a fake device
         Device mockDevice = new Device();
         mockDevice.setId(1L);
@@ -63,6 +63,19 @@ public class DeviceServiceTests {
         //Assert: Check if the expected and actual values match
         assertNotNull(foundDevice);
         assertEquals("Test Device", foundDevice.getName());
+    }
+
+    @Test
+    void testGetDevice_notFound(){
+        //Arrange
+        when(deviceRepository.findById(1L)).thenReturn(Optional.empty());
+
+        //Act
+        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () -> deviceService.getDevice(1L));
+
+        //Verify
+        assertNotNull(thrown);
+        assertEquals("Device with id 1 not found", thrown.getMessage());
     }
 
     @Test
@@ -86,9 +99,7 @@ public class DeviceServiceTests {
         when(deviceRepository.existsById(deviceId)).thenReturn(false);
 
         //Act
-        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () ->{
-            deviceService.deleteDevice(deviceId);
-        });
+        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () -> deviceService.deleteDevice(deviceId));
 
         //Assert
         verify(deviceRepository, never()).deleteById(deviceId);
