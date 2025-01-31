@@ -29,7 +29,6 @@ public class DeviceServiceTests {
     @Mock //Mock the repository
     private DeviceRepository deviceRepository;
 
-    @Disabled
     @Test
     void testSaveDevice(){
         Device mockDevice = new Device();
@@ -46,13 +45,13 @@ public class DeviceServiceTests {
         assertNotNull(savedDevice.getDeviceType());
     }
 
-    @Disabled
     @Test
     void testGetDevice_found(){
         // (Step 1) Arrange: Create a fake device
         Device mockDevice = new Device();
         mockDevice.setId(1L);
         mockDevice.setName("Test Device");
+        mockDevice.setDeviceType("test");
 
         // Whenever deviceRepository.findById(1L) is called, Instead of calling the actual database it returns Optional.of(mockDevice)
         when(deviceRepository.findById(1L)).thenReturn(Optional.of(mockDevice));
@@ -63,6 +62,7 @@ public class DeviceServiceTests {
         //Assert: Check if the expected and actual values match
         assertNotNull(foundDevice);
         assertEquals("Test Device", foundDevice.getName());
+        assertEquals("test", foundDevice.getDeviceType());
     }
 
     @Test
