@@ -33,4 +33,9 @@ public class DeviceController {
     private String deleteDevice(@PathVariable Long id){
         return inventoryService.deleteDevice(id);
     }
+
+    @GetMapping("test")
+    private String testDevice(){
+        return "Working";
+    }
 }
