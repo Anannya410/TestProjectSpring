@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/shelf")
+@CrossOrigin(origins = "http://localhost:4200/")
 public class ShelfController {
 
     @Autowired

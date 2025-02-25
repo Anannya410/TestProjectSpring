@@ -7,7 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -19,6 +23,9 @@ public class DeviceService implements InventoryService{
 
     @Override
     public Device saveDevice(Device device) {
+        if(device.getId() == null || device.getId() == 0){
+            throw new EntityNotFoundException("Device id cannot be null");
+        }
         log.info("Saving device " + device.getId());
         return deviceRepository.save(device);
     }
@@ -28,6 +35,11 @@ public class DeviceService implements InventoryService{
         log.info("Getting device " + id);
         return deviceRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Device with id " + id + " not found"));
+    }
+
+    @Override
+    public List<Device> getAllDevices() {
+        return deviceRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     @Override
