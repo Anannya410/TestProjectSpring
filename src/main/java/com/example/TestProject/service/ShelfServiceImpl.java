@@ -10,6 +10,7 @@ import com.example.TestProject.repository.ShelfRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public class ShelfServiceImpl implements ShelfService{
     @Override
     public List<Shelf> getAllShelves() {
         log.info("Getting all shelves");
-        return shelfRepository.findAll();
+        return shelfRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
 
@@ -63,7 +64,7 @@ public class ShelfServiceImpl implements ShelfService{
     @Override
     public List<ShelfPosition> getAllShelfPosition() {
        log.info("Getting all shelf positions");
-       return shelfPositionRepository.findAll();
+       return shelfPositionRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     @Override
@@ -97,7 +98,7 @@ public class ShelfServiceImpl implements ShelfService{
             throw new IllegalStateException("ShelfPosition with id " + shelfPositionId + " is already assigned to another Shelf");
         }
 
-                //Set relationship , update node values
+        //Set relationship , update node values
         shelf.setShelfPositionId(shelfPositionId);
         shelfPosition.setShelf(shelf);
 

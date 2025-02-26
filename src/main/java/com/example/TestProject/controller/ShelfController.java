@@ -28,7 +28,7 @@ public class ShelfController {
         return shelfService.getShelfById(id);
     }
 
-    @GetMapping("/get")
+    @GetMapping("/getall")
     private List<Shelf> getAllShelves(){
         return shelfService.getAllShelves();
     }
