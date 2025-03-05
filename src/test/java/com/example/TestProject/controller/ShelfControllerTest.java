@@ -78,7 +78,7 @@ public class ShelfControllerTest {
         List<Shelf> shelfList = Arrays.asList(shelf1, shelf2);
         when(shelfServiceImpl.getAllShelves()).thenReturn(shelfList);
 
-        mockMvc.perform(get("/api/shelf/get"))
+        mockMvc.perform(get("/api/shelf/getall"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].id").value(1))
@@ -142,17 +142,17 @@ public class ShelfControllerTest {
     @Test
     void testAddShelfPositionToDevice() throws Exception {
         DeviceShelfPositionRequest request = new DeviceShelfPositionRequest();
-        request.setDeviceId(1L);
+        request.setDeviceName("TestDevice");
         request.setShelfPositionId(1L);
 
-        doNothing().when(shelfServiceImpl).addShelfPositionToDevice(1L, 1L);
+        doNothing().when(shelfServiceImpl).addShelfPositionToDevice("TestDevice", 1L);
 
         mockMvc.perform(post("/api/shelf/relationship/device/shelfposition")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
 
-        verify(shelfServiceImpl, times(1)).addShelfPositionToDevice(1L, 1L);
+        verify(shelfServiceImpl, times(1)).addShelfPositionToDevice("TestDevice", 1L);
     }
 
     void testAddShelfToShelfPosition() throws Exception {

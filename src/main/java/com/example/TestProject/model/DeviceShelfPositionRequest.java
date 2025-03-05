@@ -4,19 +4,19 @@
 package com.example.TestProject.model;
 
 public class DeviceShelfPositionRequest {
-    private Long deviceId;
+    private String deviceName;
     private Long shelfPositionId;
 
-    public Long getDeviceId() {
-        return deviceId;
+    public String getDeviceName() {
+        return deviceName;
     }
 
     public Long getShelfPositionId() {
         return shelfPositionId;
     }
 
-    public void setDeviceId(Long deviceId) {
-        this.deviceId = deviceId;
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 
     public void setShelfPositionId(Long shelfPositionId) {

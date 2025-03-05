@@ -3,17 +3,20 @@ package com.example.TestProject.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
-import org.springframework.web.bind.annotation.PostMapping;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.List;;
 
 @Node
 public class Device {
 
-    @Id
-    private Long id;
-    private String name;
     private String deviceType;
+    private Long id;
+    @Id
+    private String name;
+    
 
     @Relationship(type = "HAS", direction = Relationship.Direction.OUTGOING)
     private List<ShelfPosition> shelfPosition;

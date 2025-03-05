@@ -1,7 +1,6 @@
 package com.example.TestProject.controller;
 
 import com.example.TestProject.model.Device;
-import com.example.TestProject.model.Device;
 import com.example.TestProject.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +21,9 @@ public class DeviceController {
         return inventoryService.saveDevice(device);
     }
 
-    @GetMapping("/{id}")
-    private Device getDevice(@PathVariable Long id){
-        return inventoryService.getDevice(id);
+    @GetMapping("/{name}")
+    private Device getDevice(@PathVariable String name){
+        return inventoryService.getDevice(name);
     }
 
     @GetMapping("/getall")
@@ -37,13 +36,8 @@ public class DeviceController {
         return inventoryService.updateDevice(inventory);
     }
 
-    @DeleteMapping("delete/{id}")
-    private String deleteDevice(@PathVariable Long id){
-        return inventoryService.deleteDevice(id);
-    }
-
-    @GetMapping("test")
-    private String testDevice(){
-        return "Working";
+    @DeleteMapping("delete/{name}")
+    private String deleteDevice(@PathVariable String name){
+        return inventoryService.deleteDevice(name);
     }
 }

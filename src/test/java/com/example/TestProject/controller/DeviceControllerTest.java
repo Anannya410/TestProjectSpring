@@ -51,7 +51,7 @@ public class DeviceControllerTest {
         mockDevice.setName("Test Device");
         mockDevice.setDeviceType("test");
 
-        when(deviceService.getDevice(1L)).thenReturn(mockDevice);
+        when(deviceService.getDevice("Test Device")).thenReturn(mockDevice);
 
         mockMvc.perform(get("/api/devices/1"))
                 .andExpect(status().isOk())
@@ -80,11 +80,11 @@ public class DeviceControllerTest {
 
     @Test
     void testDeleteDevice() throws Exception {
-        Long deviceId = 1L;
+        String deviceName = "Test Device";
 
-        when(deviceService.deleteDevice(deviceId)).thenReturn("Device Deleted Successfully");
+        when(deviceService.deleteDevice(deviceName)).thenReturn("Device Deleted Successfully");
 
-        mockMvc.perform(delete("/api/devices/delete/{id}", deviceId))
+        mockMvc.perform(delete("/api/devices/delete/{name}", deviceName))
                 .andExpect(status().isOk());
     }
 }

@@ -4,31 +4,31 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Node
 public class ShelfPosition {
 
     @Id
     private Long id;
     private String name;
-    private Long deviceId;
+
+    @Relationship(type = "HAS", direction = Relationship.Direction.OUTGOING)
+    private Device device;
 
     @Relationship(type = "HAS", direction = Relationship.Direction.OUTGOING)
     private Shelf shelf;
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
-    public Long getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(Long deviceId) {
-        this.deviceId = deviceId;
+    public Device getDevice() {
+        return this.device;
     }
 
     public Shelf getShelf() {
@@ -45,5 +45,9 @@ public class ShelfPosition {
 
     public void setShelf(Shelf shelf) {
         this.shelf = shelf;
+    }
+
+    public void setDevice(Device device) {
+        this.device = device;
     }
 }
