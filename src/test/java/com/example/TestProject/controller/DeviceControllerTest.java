@@ -30,7 +30,7 @@ public class DeviceControllerTest {
     void testSaveDevice() throws Exception {
         Device mockDevice = new Device();
         mockDevice.setId(1L);
-        mockDevice.setName("Test Device");
+        mockDevice.setName("TestDevice");
         mockDevice.setDeviceType("test");
 
         when(deviceService.saveDevice(any(Device.class))).thenReturn(mockDevice);
@@ -40,7 +40,7 @@ public class DeviceControllerTest {
                         .content(objectMapper.writeValueAsString(mockDevice)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.name").value("Test Device"))
+                .andExpect(jsonPath("$.name").value("TestDevice"))
                 .andExpect(jsonPath("$.deviceType").value("test"));
     }
 
@@ -48,15 +48,15 @@ public class DeviceControllerTest {
     void testGetDevice() throws Exception {
         Device mockDevice = new Device();
         mockDevice.setId(1L);
-        mockDevice.setName("Test Device");
+        mockDevice.setName("TestDevice");
         mockDevice.setDeviceType("test");
 
-        when(deviceService.getDevice("Test Device")).thenReturn(mockDevice);
+        when(deviceService.getDevice("TestDevice")).thenReturn(mockDevice);
 
-        mockMvc.perform(get("/api/devices/1"))
+        mockMvc.perform(get("/api/devices/TestDevice"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("Test Device"))
+                .andExpect(jsonPath("$.name").value("TestDevice"))
                 .andExpect(jsonPath("$.deviceType").value("test"));
     }
 
@@ -64,7 +64,7 @@ public class DeviceControllerTest {
     void testUpdateDevice() throws Exception {
         Device mockDevice = new Device();
         mockDevice.setId(1L);
-        mockDevice.setName("Test Device");
+        mockDevice.setName("TestDevice");
         mockDevice.setDeviceType("test");
 
         when(deviceService.updateDevice(any(Device.class))).thenReturn(mockDevice);
@@ -74,13 +74,13 @@ public class DeviceControllerTest {
                         .content(objectMapper.writeValueAsString(mockDevice)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("Test Device"))
+                .andExpect(jsonPath("$.name").value("TestDevice"))
                 .andExpect(jsonPath("$.deviceType").value("test"));
     }
 
     @Test
     void testDeleteDevice() throws Exception {
-        String deviceName = "Test Device";
+        String deviceName = "TestDevice";
 
         when(deviceService.deleteDevice(deviceName)).thenReturn("Device Deleted Successfully");
 

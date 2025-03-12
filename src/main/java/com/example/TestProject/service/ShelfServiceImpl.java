@@ -3,6 +3,7 @@ package com.example.TestProject.service;
 import com.example.TestProject.exception.EntityNotFoundException;
 import com.example.TestProject.model.Device;
 import com.example.TestProject.model.Shelf;
+import com.example.TestProject.model.ShelfDTO;
 import com.example.TestProject.model.ShelfPosition;
 import com.example.TestProject.model.ShelfPositionDTO;
 import com.example.TestProject.repository.DeviceRepository;
@@ -45,17 +46,60 @@ public class ShelfServiceImpl implements ShelfService{
         }
     }
 
+    // @Override
+    // public Shelf getShelfById(Long id) {
+    //     log.info("Getting shelf with id "+ id);
+    //     return shelfRepository.findById(id)
+    //             .orElseThrow(() -> new EntityNotFoundException("Shelf with id "+id+" not found"));
+    // }
+
     @Override
     public Shelf getShelfById(Long id) {
-        log.info("Getting shelf with id "+ id);
-        return shelfRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Shelf with id "+id+" not found"));
+        Optional<ShelfDTO> result = shelfRepository.findByIdCustom(id);
+        if(result.isPresent()){
+            Shelf shelf = result.get().getShelf();
+            
+            if(result.get().getShelfPositionId() != null){
+                ShelfPosition shelfPosition = new ShelfPosition();
+
+                shelfPosition.setId(result.get().getShelfPositionId());
+                shelfPosition.setName(result.get().getShelfPositionName());
+                
+                shelf.setShelfPosition(shelfPosition);
+            }
+
+            return shelf;
+        }
+
+        throw new EntityNotFoundException("Shelf with id "+id+" not found");
     }
 
     @Override
     public List<Shelf> getAllShelves() {
         log.info("Getting all shelves");
-        return shelfRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+        //return shelfRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+
+        List<ShelfDTO> result = shelfRepository.findAllCustom();
+        List<Shelf> shelfList = new ArrayList<>();
+
+        if(result != null){
+            for(ShelfDTO dto : result){
+                Shelf shelf = dto.getShelf();
+                
+                if(dto.getShelfPositionId() != null){
+                    ShelfPosition shelfPosition = new ShelfPosition();
+                    
+                    shelfPosition.setId(dto.getShelfPositionId());
+                    shelfPosition.setName(dto.getShelfPositionName());
+                    
+                    shelf.setShelfPosition(shelfPosition);
+                }
+
+                shelfList.add(shelf);
+            }
+        }
+
+        return shelfList;
     }
 
     @Override
@@ -98,18 +142,23 @@ public class ShelfServiceImpl implements ShelfService{
         if(result.isPresent()){
             ShelfPosition shelfPosition = result.get().getShelfPosition();
 
-            Device device = new Device();
-            Shelf shelf = new Shelf();
-
-            device.setId(result.get().getDeviceId());
-            device.setName(result.get().getDeviceName());
-            device.setDeviceType(result.get().getDeviceType());
-            shelfPosition.setDevice(device);
-
-            shelf.setId(result.get().getShelfId());
-            shelf.setName(result.get().getShelfName());
-            shelf.setShelfType(result.get().getShelfType());
-            shelfPosition.setShelf(shelf);
+            if(result.get().getDeviceId() != null){
+                Device device = new Device();
+                
+                device.setId(result.get().getDeviceId());
+                device.setName(result.get().getDeviceName());
+                device.setDeviceType(result.get().getDeviceType());
+                shelfPosition.setDevice(device);
+            }
+            
+            if(result.get().getShelfId() != null){
+                Shelf shelf = new Shelf();
+                
+                shelf.setId(result.get().getShelfId());
+                shelf.setName(result.get().getShelfName());
+                shelf.setShelfType(result.get().getShelfType());
+                shelfPosition.setShelf(shelf);
+            }
 
             return shelfPosition;
         }
@@ -132,45 +181,23 @@ public class ShelfServiceImpl implements ShelfService{
         for(ShelfPositionDTO dto: result){
             ShelfPosition shelfPosition = dto.getShelfPosition();
             
-            Device device = new Device();
-            Shelf shelf = new Shelf();
-
-            device.setId(dto.getDeviceId());
-            device.setName(dto.getDeviceName());
-            device.setDeviceType(dto.getDeviceType());
-            shelfPosition.setDevice(device);
-
-            shelf.setId(dto.getShelfId());
-            shelf.setName(dto.getShelfName());
-            shelf.setShelfType(dto.getShelfType());
-            shelfPosition.setShelf(shelf);
-
-            // // //Optional<Device> deviceResult = shelfPositionRepository.findAssociatedDevice(shelfPosition.getId());
-            // // //if(deviceResult.isPresent()){
-            // // String deviceName = shelfPositionRepository.findAssociatedDevice(shelfPosition.getId());
-            // // if(deviceName != null){
-            // //     Device device = new Device();
-            // //     device.setName(deviceName);
-            // //     shelfPosition.setDevice(device);
-            // // }
-
-            // TempDeviceDTO deviceDTO = shelfPositionRepository.findAssociatedDevice(shelfPosition.getId());
-            // if(deviceDTO != null){
-            //     Device device = new Device();
-            //     device.setId(deviceDTO.getId());
-            //     device.setName(deviceDTO.getName());
-            //     device.setDeviceType(deviceDTO.getDeviceType());
-
-            //     shelfPosition.setDevice(device);
-            // }
-
-            // log.info("FOR SHELF POSITION ID "+shelfPosition.getId());
-            // Long shelfId = shelfPositionRepository.findAssociatedShelf(shelfPosition.getId());
-            // if(shelfId != null){
-            //     Shelf shelf = new Shelf();
-            //     shelf.setId(shelfId);
-            //     shelfPosition.setShelf(shelf);
-            // }
+            if(dto.getDeviceId() != null){
+                Device device = new Device();
+                
+                device.setId(dto.getDeviceId());
+                device.setName(dto.getDeviceName());
+                device.setDeviceType(dto.getDeviceType());
+                shelfPosition.setDevice(device);
+            }
+            
+            if(dto.getShelfId() != null){
+                Shelf shelf = new Shelf();
+                
+                shelf.setId(dto.getShelfId());
+                shelf.setName(dto.getShelfName());
+                shelf.setShelfType(dto.getShelfType());
+                shelfPosition.setShelf(shelf);
+            }
 
             shelfPositionList.add(shelfPosition);
         }
@@ -193,10 +220,10 @@ public class ShelfServiceImpl implements ShelfService{
 
         shelfPositionRepository.deleteById(id);
         
-        //Delete entry from associated shelf
-        Shelf shelf = shelfPosition.getShelf();
-        shelf.setShelfPositionId(null);
-        updateShelf(shelf);
+        // //Delete entry from associated shelf
+        // Shelf shelf = shelfPosition.getShelf();
+        // shelf.setShelfPositionId(null);
+        // updateShelf(shelf);
         
         return "ShelfPosition Deleted successfully";
     }
@@ -238,12 +265,12 @@ public class ShelfServiceImpl implements ShelfService{
             throw new IllegalStateException("ShelfPosition with id " + shelfPositionId + " is already assigned to another Shelf");
         }
 
-        if(shelf.getShelfPositionId() != null) {
+        if(shelf.getShelfPosition() != null) {
             throw new IllegalStateException("Shelf with id " + shelfId + " is already assigned to another shelfPostion");
         }
 
         //Set relationship , update node values
-        shelf.setShelfPositionId(shelfPositionId);
+        shelf.setShelfPosition(shelfPosition);
         shelfPosition.setShelf(shelf);
 
         //Save the updated nodes

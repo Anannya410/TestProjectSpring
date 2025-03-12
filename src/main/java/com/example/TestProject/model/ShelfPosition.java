@@ -13,7 +13,7 @@ public class ShelfPosition {
     private Long id;
     private String name;
 
-    @Relationship(type = "HAS", direction = Relationship.Direction.OUTGOING)
+    @Relationship(type = "HAS", direction = Relationship.Direction.INCOMING)
     private Device device;
 
     @Relationship(type = "HAS", direction = Relationship.Direction.OUTGOING)

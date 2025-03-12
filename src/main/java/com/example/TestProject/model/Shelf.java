@@ -12,7 +12,10 @@ public class Shelf {
     private Long id;
     private String name;
     private String shelfType;
-    private Long shelfPositionId;
+    //private Long shelfPositionId;
+
+    @Relationship(type = "HAS", direction =  Relationship.Direction.INCOMING)
+    ShelfPosition shelfPosition;
 
 
     public Long getId(){
@@ -27,9 +30,10 @@ public class Shelf {
         return this.shelfType;
     }
 
-    public Long getShelfPositionId() {
-        return this.shelfPositionId;
+    public ShelfPosition getShelfPosition(){
+        return this.shelfPosition;
     }
+
 
     public void setId(Long id) {
         this.id = id;
@@ -43,7 +47,7 @@ public class Shelf {
         this.shelfType = shelfType;
     }
 
-    public void setShelfPositionId(Long shelfPositionId) {
-        this.shelfPositionId = shelfPositionId;
+    public void setShelfPosition(ShelfPosition shelfPosition){
+        this.shelfPosition = shelfPosition;
     }
 }

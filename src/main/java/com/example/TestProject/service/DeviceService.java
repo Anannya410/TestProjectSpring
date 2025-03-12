@@ -85,7 +85,7 @@ public class DeviceService implements InventoryService{
 
     @Override
     public String deleteDevice(String name) {
-        Device device = deviceRepository.findById(name).orElseThrow(() -> new EntityNotFoundException("Device with id " + name + " not found"));
+        deviceRepository.findById(name).orElseThrow(() -> new EntityNotFoundException("Device with name " + name + " not found"));
         
         log.info("Deleting device " + name);
         deviceRepository.deleteById(name);

@@ -12,15 +12,16 @@ import org.springframework.data.neo4j.repository.query.Query;
 public interface ShelfPositionRepository extends Neo4jRepository<ShelfPosition, Long> {
     @Query("MATCH (sp:ShelfPosition) " + 
     "WHERE sp.id = $id " +
-    "OPTIONAL MATCH (sp)-[:HAS]->(d:Device)" + 
+    "OPTIONAL MATCH (sp)<-[:HAS]-(d:Device)" + 
     "OPTIONAL MATCH (sp)-[:HAS]->(s:Shelf) "+ 
     "RETURN sp AS shelfPosition, d.id AS deviceId, d.name AS deviceName, d.deviceType AS deviceType, s.id AS shelfId, s.name AS shelfName, s.shelfType AS shelfType")
     Optional<ShelfPositionDTO> findByIdCustom(Long id);    
 
     @Query("MATCH (sp:ShelfPosition) " + 
-    "OPTIONAL MATCH (sp)-[:HAS]->(d:Device)" + 
+    "OPTIONAL MATCH (sp)<-[:HAS]-(d:Device)" + 
     "OPTIONAL MATCH (sp)-[:HAS]->(s:Shelf) "+ 
-    "RETURN sp AS shelfPosition, d.id AS deviceId, d.name AS deviceName, d.deviceType AS deviceType, s.id AS shelfId, s.name AS shelfName, s.shelfType AS shelfType")
+    "RETURN sp AS shelfPosition, d.id AS deviceId, d.name AS deviceName, d.deviceType AS deviceType, s.id AS shelfId, s.name AS shelfName, s.shelfType AS shelfType "
+    + "ORDER BY sp.id")
     List<ShelfPositionDTO> findAllCustom();  
 } 
 

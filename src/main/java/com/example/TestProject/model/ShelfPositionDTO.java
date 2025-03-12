@@ -2,12 +2,12 @@ package com.example.TestProject.model;
 
 public class ShelfPositionDTO {
     private ShelfPosition shelfPosition;
-    Long deviceId;
-    String deviceName;
-    String deviceType;
-    Long shelfId;
-    String shelfName;
-    String shelfType;
+    private Long deviceId;
+    private String deviceName;
+    private String deviceType;
+    private Long shelfId;
+    private String shelfName;
+    private String shelfType;
 
     public ShelfPositionDTO(ShelfPosition shelfPosition, Long deviceId, String deviceName, String deviceType, Long shelfId, String shelfName, String shelfType){
         this.shelfPosition = shelfPosition;

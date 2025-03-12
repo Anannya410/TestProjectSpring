@@ -6,7 +6,9 @@ import static org.mockito.Mockito.*;
 import com.example.TestProject.exception.EntityNotFoundException;
 import com.example.TestProject.model.Device;
 import com.example.TestProject.model.Shelf;
+import com.example.TestProject.model.ShelfDTO;
 import com.example.TestProject.model.ShelfPosition;
+import com.example.TestProject.model.ShelfPositionDTO;
 import com.example.TestProject.repository.DeviceRepository;
 import com.example.TestProject.repository.ShelfPositionRepository;
 import com.example.TestProject.repository.ShelfRepository;
@@ -42,7 +44,7 @@ public class ShelfServiceTest {
         //Arrange
         Shelf mockShelf = new Shelf();
         mockShelf.setId(1L);
-        mockShelf.setName("Test Shelf");
+        mockShelf.setName("TestShelf");
         mockShelf.setShelfType("Test");
 
         when(shelfRepository.save(mockShelf)).thenReturn(mockShelf);
@@ -53,9 +55,9 @@ public class ShelfServiceTest {
         //Assert
         assertNotNull(savedShelf);
         assertEquals(1L ,savedShelf.getId());
-        assertEquals("Test Shelf",savedShelf.getName());
+        assertEquals("TestShelf",savedShelf.getName());
         assertEquals("Test",savedShelf.getShelfType());
-        assertNull(savedShelf.getShelfPositionId());
+        assertNull(savedShelf.getShelfPosition());
     }
 
     @Test
@@ -63,23 +65,25 @@ public class ShelfServiceTest {
         //Arrange
         Shelf mockShelf = new Shelf();
         mockShelf.setId(1L);
-        mockShelf.setName("Test Shelf");
+        mockShelf.setName("TestShelf");
         mockShelf.setShelfType("Test");
 
-        when(shelfRepository.findById(1L)).thenReturn(Optional.of(mockShelf));
+        ShelfDTO mockResult = new ShelfDTO(mockShelf, null, null);
+
+        when(shelfRepository.findByIdCustom(1L)).thenReturn(Optional.of(mockResult));
 
         //Act
         Shelf foundShelf = shelfServiceImpl.getShelfById(1L);
 
         //Assert
         assertNotNull(foundShelf);
-        assertEquals("Test Shelf",foundShelf.getName());
+        assertEquals("TestShelf",foundShelf.getName());
     }
 
     @Test
     void testGetShelfById_notFound(){
         //Arrange
-        when(shelfRepository.findById(1L)).thenReturn(Optional.empty());
+        when(shelfRepository.findByIdCustom(1L)).thenReturn(Optional.empty());
 
         //Act
         EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () -> shelfServiceImpl.getShelfById(1L));
@@ -92,17 +96,20 @@ public class ShelfServiceTest {
     @Test
     void testGetAllShelves(){
         //Arrange
-        Shelf mockShelf = new Shelf();
-        mockShelf.setId(1L);
-        mockShelf.setName("Test Shelf");
+        Shelf mockShelf1= new Shelf();
+        mockShelf1.setId(1L);
+        mockShelf1.setName("TestShelf1");
 
         Shelf mockShelf2 = new Shelf();
         mockShelf2.setId(2L);
-        mockShelf2.setName("Test Shelf2");
+        mockShelf2.setName("TestShelf2");
 
-        List<Shelf> mockShelves = Arrays.asList(mockShelf, mockShelf2);
+        ShelfDTO mockDTO1 = new ShelfDTO(mockShelf1, null, null);
+        ShelfDTO mockDTO2 = new ShelfDTO(mockShelf2, null, null);
 
-        when(shelfRepository.findAll(Sort.by(Sort.Direction.ASC,"id"))).thenReturn(mockShelves);
+        List<ShelfDTO> mockResult = Arrays.asList(mockDTO1, mockDTO2);
+
+        when(shelfRepository.findAllCustom()).thenReturn(mockResult);
 
         //Act
         List<Shelf> foundShelves= shelfServiceImpl.getAllShelves();
@@ -110,8 +117,8 @@ public class ShelfServiceTest {
         //Assert
         assertNotNull(foundShelves);
         assertEquals(2, foundShelves.size());
-        assertEquals("Test Shelf",foundShelves.get(0).getName());
-        assertEquals("Test Shelf2",foundShelves.get(1).getName());
+        assertEquals("TestShelf1",foundShelves.get(0).getName());
+        assertEquals("TestShelf2",foundShelves.get(1).getName());
     }
 
     @Test
@@ -141,7 +148,9 @@ public class ShelfServiceTest {
         mockShelfPosition.setId(1L);
         mockShelfPosition.setName("Test ShelfPosition");
 
-        when(shelfPositionRepository.findById(1l)).thenReturn(Optional.of(mockShelfPosition));
+        ShelfPositionDTO mockResult = new ShelfPositionDTO(mockShelfPosition, null, null, null, null, null, null);
+
+        when(shelfPositionRepository.findByIdCustom(1l)).thenReturn(Optional.of(mockResult));
 
         //Act
         ShelfPosition foundShelfPostion = shelfServiceImpl.getShelfPositionById(1l);
@@ -154,14 +163,14 @@ public class ShelfServiceTest {
     @Test
     void testGetShelfPositionById_notFound(){
         //Arrange
-        when(shelfPositionRepository.findById(1L)).thenReturn(Optional.empty());
+        when(shelfPositionRepository.findByIdCustom(1L)).thenReturn(Optional.empty());
 
         //Act
         EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, () -> shelfServiceImpl.getShelfPositionById(1L));
 
         //Assert
         assertNotNull(thrown);
-        assertEquals("Shelf with id 1 not found", thrown.getMessage());
+        assertEquals("ShelfPosition with id 1 not found", thrown.getMessage());
     }
 
     @Test
@@ -174,9 +183,13 @@ public class ShelfServiceTest {
         mockShelfPosition2.setId(2L);
         mockShelfPosition2.setName("Test ShelfPosition2");
 
-        List<ShelfPosition> mockShelfPositions = Arrays.asList(mockShelfPosition, mockShelfPosition2);
+        ShelfPositionDTO mockDTO1 = new ShelfPositionDTO(mockShelfPosition, null, null, null, null, null, null);
 
-        when(shelfPositionRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))).thenReturn(mockShelfPositions);
+        ShelfPositionDTO mockDTO2 = new ShelfPositionDTO(mockShelfPosition2, null, null, null, null, null, null);
+
+        List<ShelfPositionDTO> mockResult = Arrays.asList(mockDTO1, mockDTO2);
+
+        when(shelfPositionRepository.findAllCustom()).thenReturn(mockResult);
 
         List<ShelfPosition> foundShelfPositions = shelfServiceImpl.getAllShelfPosition();
 
@@ -185,56 +198,55 @@ public class ShelfServiceTest {
         assertEquals("Test ShelfPosition",foundShelfPositions.get(0).getName());
         assertEquals("Test ShelfPosition2",foundShelfPositions.get(1).getName());
     }
-/* 
-@Test
-void testAddShelfPositionToDevice(){
-    //Arrange
-    ShelfPosition mockShelfPosition = new ShelfPosition();
-    mockShelfPosition.setId(1L);
-    mockShelfPosition.setName("Test ShelfPosition");
-    
-    Device mockDevice = new Device();
-    mockDevice.setId(1L);
-    mockDevice.setName("Test Device");
-    mockDevice.setShelfPosition(new ArrayList<>()); // Initialize list before adding
-    
-    when(deviceRepository.findById(1L)).thenReturn(Optional.of(mockDevice));
-    when(shelfPositionRepository.findById(1L)).thenReturn(Optional.of(mockShelfPosition));
-    
-    when(deviceRepository.save(mockDevice)).thenReturn(mockDevice);
-    when(shelfPositionRepository.save(mockShelfPosition)).thenReturn(mockShelfPosition);
-    
-    //Act
-    shelfServiceImpl.addShelfPositionToDevice(1L, 1L);
-    
-    //Assert
-    verify(deviceRepository, times(1)).save(mockDevice);
-    verify(shelfPositionRepository, times(1)).save(mockShelfPosition);
-}
+ 
+    @Test
+    void testAddShelfPositionToDevice(){
+        //Arrange
+        ShelfPosition mockShelfPosition = new ShelfPosition();
+        mockShelfPosition.setId(1L);
+        mockShelfPosition.setName("Test ShelfPosition");
 
-@Test
-void testAddShelfToShelfPosition(){
-    //Arrange
-    ShelfPosition mockShelfPosition = new ShelfPosition();
-    mockShelfPosition.setId(1L);
-    mockShelfPosition.setName("Test ShelfPosition");
-    
-    Shelf mockShelf = new Shelf();
-    mockShelf.setId(1L);
-    mockShelf.setName("Test Shelf");
-    mockShelf.setShelfType("Test");
-    
-    when(shelfPositionRepository.findById(1L)).thenReturn(Optional.of(mockShelfPosition));
-    when(shelfRepository.findById(1L)).thenReturn(Optional.of(mockShelf));
-    
-    //Act
-    shelfServiceImpl.addShelfToShelfPosition(1L, 1L);
-    
-    //Assert
-    verify(shelfPositionRepository, times(1)).save(mockShelfPosition);
-    verify(shelfRepository, times(1)).save(mockShelf);
-    
-}
-*/
+        Device mockDevice = new Device();
+        mockDevice.setId(1L);
+        mockDevice.setName("Test Device");
+        mockDevice.setShelfPosition(new ArrayList<>()); // Initialize list before adding
+
+        when(deviceRepository.findById(mockDevice.getName())).thenReturn(Optional.of(mockDevice));
+        when(shelfPositionRepository.findById(1L)).thenReturn(Optional.of(mockShelfPosition));
+
+        when(deviceRepository.save(mockDevice)).thenReturn(mockDevice);
+        when(shelfPositionRepository.save(mockShelfPosition)).thenReturn(mockShelfPosition);
+
+        //Act
+        shelfServiceImpl.addShelfPositionToDevice(mockDevice.getName(), 1L);
+
+        //Assert
+        verify(deviceRepository, times(1)).save(mockDevice);
+        verify(shelfPositionRepository, times(1)).save(mockShelfPosition);
+    }
+
+    @Test
+        void testAddShelfToShelfPosition(){
+        //Arrange
+        ShelfPosition mockShelfPosition = new ShelfPosition();
+        mockShelfPosition.setId(1L);
+        mockShelfPosition.setName("Test ShelfPosition");
+
+        Shelf mockShelf = new Shelf();
+        mockShelf.setId(1L);
+        mockShelf.setName("Test Shelf");
+        mockShelf.setShelfType("Test");
+
+        when(shelfPositionRepository.findById(1L)).thenReturn(Optional.of(mockShelfPosition));
+        when(shelfRepository.findById(1L)).thenReturn(Optional.of(mockShelf));
+
+        //Act
+        shelfServiceImpl.addShelfToShelfPosition(1L, 1L);
+
+        //Assert
+        verify(shelfPositionRepository, times(1)).save(mockShelfPosition);
+        verify(shelfRepository, times(1)).save(mockShelf);
+
+    }
 
 }
