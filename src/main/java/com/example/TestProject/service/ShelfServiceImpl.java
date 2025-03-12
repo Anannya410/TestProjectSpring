@@ -65,8 +65,19 @@ public class ShelfServiceImpl implements ShelfService{
                 shelfPosition.setId(result.get().getShelfPositionId());
                 shelfPosition.setName(result.get().getShelfPositionName());
                 
+                if(result.get().getDeviceID() != null){
+                    Device device = new Device();
+    
+                    device.setId(result.get().getDeviceID());
+                    device.setName(result.get().getDeviceName());
+                    device.setDeviceType(result.get().getDeviceType());
+
+                    shelfPosition.setDevice(device);
+                }
+
                 shelf.setShelfPosition(shelfPosition);
             }
+
 
             return shelf;
         }
@@ -91,6 +102,16 @@ public class ShelfServiceImpl implements ShelfService{
                     
                     shelfPosition.setId(dto.getShelfPositionId());
                     shelfPosition.setName(dto.getShelfPositionName());
+
+                    if(dto.getDeviceID() != null){
+                        Device device = new Device();
+        
+                        device.setId(dto.getDeviceID());
+                        device.setName(dto.getDeviceName());
+                        device.setDeviceType(dto.getDeviceType());
+    
+                        shelfPosition.setDevice(device);
+                    }
                     
                     shelf.setShelfPosition(shelfPosition);
                 }
